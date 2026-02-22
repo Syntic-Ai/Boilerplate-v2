@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boilerplate V2 Implementation Plan</title>
+<style>
+  :root { --bg: #0f172a; --surface: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --primary: #818cf8; --accent: #f472b6; --green: #34d399; --yellow: #fbbf24; --red: #f87171; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.75rem; font-weight: 700; color: var(--primary); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.25rem; font-weight: 600; color: var(--text); margin: 1.5rem 0 0.75rem; }
+  h4 { font-size: 1.1rem; font-weight: 600; color: var(--muted); margin: 1rem 0 0.5rem; }
+  p, li { color: var(--muted); }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ul, ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+  li { margin: 0.3rem 0; }
+  code { font-family: 'JetBrains Mono', 'Fira Code', monospace; background: var(--surface); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; color: var(--accent); border: 1px solid var(--border); }
+  pre { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin: 1rem 0; overflow-x: auto; }
+  pre code { background: none; border: none; padding: 0; color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: var(--surface); color: var(--primary); font-weight: 600; }
+  td { color: var(--muted); }
+  tr:nth-child(even) td { background: rgba(30, 41, 59, 0.5); }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+  .badge-green { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+  .badge-yellow { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+  .badge-red { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+  .badge-primary { background: rgba(129, 140, 248, 0.15); color: var(--primary); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+  .subtitle { font-size: 1.1rem; color: var(--muted); margin-bottom: 2rem; }
+  .phase-header { display: flex; align-items: center; gap: 0.75rem; }
+  .phase-num { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; text-align: center; }
+  .metric-value { font-size: 1.5rem; font-weight: 700; color: var(--green); }
+  .metric-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+  .highlight { background: rgba(129, 140, 248, 0.1); border-left: 3px solid var(--primary); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+</style>
+</head>
+<body>
+
+<h1>Boilerplate V2 Implementation Plan</h1>
+<p class="subtitle">Create a design-first React boilerplate for beautiful AI-generated apps on the Syntic platform</p>
+
+<div class="highlight">
+  <strong>Problem:</strong> Generated apps look basic and ugly compared to what Claude produces on claude.ai. Root causes: no Framer Motion, no Google Fonts, bland colors, 50+ bloated components, 1,950-line system prompt eating context, no CSS utilities, loose TypeScript.
+</div>
+
+<hr>
+
+<h2><span class="phase-num">1</span> Phase 1: Foundation Files</h2>
+
+<h3>1.1 <code>package.json</code></h3>
+<div class="card">
+  <h4>ADD</h4>
+  <ul>
+    <li><code>framer-motion</code> (~11KB gzipped) &mdash; staggered reveals, page transitions, hover effects</li>
+  </ul>
+  <h4>REMOVE 14 packages</h4>
+  <ul>
+    <li><code>embla-carousel-react</code>, <code>recharts</code>, <code>cmdk</code>, <code>react-day-picker</code>, <code>react-resizable-panels</code>, <code>vaul</code>, <code>input-otp</code></li>
+    <li><code>@radix-ui/react-context-menu</code>, <code>@radix-ui/react-menubar</code>, <code>@radix-ui/react-navigation-menu</code></li>
+    <li><code>@radix-ui/react-hover-card</code>, <code>@radix-ui/react-aspect-ratio</code>, <code>@radix-ui/react-collapsible</code></li>
+    <li><code>@tailwindcss/typography</code></li>
+  </ul>
+  <h4>Result</h4>
+  <p>~22 runtime deps (down from ~35) &mdash; <strong>37% fewer deps</strong>, ~10s faster npm install</p>
+</div>
+
+<h3>1.2 TypeScript Configuration</h3>
+<div class="card">
+  <p><code>tsconfig.json</code> + <code>tsconfig.app.json</code> + <code>tsconfig.node.json</code></p>
+  <ul>
+    <li><code>strict: true</code></li>
+    <li><code>noImplicitAny: true</code></li>
+    <li><code>strictNullChecks: true</code></li>
+  </ul>
+</div>
+
+<h3>1.3 <code>index.html</code> &mdash; Pre-load Google Fonts</h3>
+<div class="card">
+  <pre><code>&lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700
+  &amp;family=Space+Grotesk:wght@500;600;700
+  &amp;family=Instrument+Serif:ital@0;1
+  &amp;family=Caveat:wght@400;700
+  &amp;family=JetBrains+Mono:wght@400;700
+  &amp;display=swap" rel="stylesheet" /&gt;</code></pre>
+  <table>
+    <thead><tr><th>Font</th><th>Tailwind Class</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td>DM Sans</td><td><code>font-sans</code></td><td>Body text (more distinctive than Inter)</td></tr>
+      <tr><td>Space Grotesk</td><td><code>font-display</code></td><td>Headlines (geometric, modern, techy)</td></tr>
+      <tr><td>Instrument Serif</td><td><code>font-serif</code></td><td>Accents, quotes (elegant editorial)</td></tr>
+      <tr><td>Caveat</td><td><code>font-handwriting</code></td><td>Annotations (handwritten casual)</td></tr>
+      <tr><td>JetBrains Mono</td><td><code>font-mono</code></td><td>Code blocks</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>1.4 <code>tailwind.config.ts</code> &mdash; Enhanced Theme</h3>
+<div class="card">
+  <ul>
+    <li>Custom <code>fontFamily</code>: sans, serif, display, mono, handwriting</li>
+    <li>Extended <code>keyframes</code>: fade-in, slide-up, slide-down, scale-in, float</li>
+    <li>Extended <code>animation</code>: matching animation classes</li>
+    <li>Extended <code>boxShadow</code>: glow, glow-lg, soft, elevated</li>
+    <li>Container: centered, max-width 1400px, 2rem padding</li>
+  </ul>
+</div>
+
+<h3>1.5 <code>src/index.css</code> &mdash; Enhanced Design System</h3>
+<div class="card">
+  <h4>Vibrant Color Tokens (replacing bland grays)</h4>
+  <ul>
+    <li><strong>Primary:</strong> indigo/violet (<code>262 83% 58%</code>) &mdash; modern, premium, high-contrast</li>
+    <li><strong>Accent:</strong> rose/coral (<code>346 77% 50%</code>) &mdash; CTA energy</li>
+    <li>Gradient tokens: <code>--gradient-start</code>, <code>--gradient-end</code></li>
+    <li>Radius: <code>0.75rem</code> (slightly rounder, more modern)</li>
+    <li>Full dark mode with matching vibrant tokens</li>
+  </ul>
+  <h4>CSS Utility Classes</h4>
+  <ul>
+    <li><code>.glass</code> / <code>.glass-light</code> &mdash; Glass-morphism with backdrop-blur</li>
+    <li><code>.gradient-primary</code> &mdash; Primary gradient background</li>
+    <li><code>.text-gradient</code> &mdash; Gradient text effect</li>
+    <li><code>.noise</code> &mdash; Noise/grain overlay via inline SVG</li>
+    <li>Keyframe animations: fadeIn, slideUp, slideDown, scaleIn, float, shimmer, pulse-glow</li>
+  </ul>
+</div>
+
+<h3>1.6 Other Configs</h3>
+<div class="card">
+  <ul>
+    <li><code>vite.config.ts</code> &mdash; Same as v1 (port 8080, @/ alias, react-swc)</li>
+    <li><code>postcss.config.js</code> &mdash; Same as v1</li>
+    <li><code>eslint.config.js</code> &mdash; Same as v1</li>
+    <li><code>components.json</code> &mdash; Change <code>baseColor</code> to <code>zinc</code> for richer neutrals</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2><span class="phase-num">2</span> Phase 2: UI Components (~30 files)</h2>
+
+<h3>Port Directly from V1 (no changes needed)</h3>
+<div class="card">
+  <p>accordion, alert, alert-dialog, avatar, badge, breadcrumb, button, card, checkbox, dialog, dropdown-menu, form, input, label, pagination, popover, progress, radio-group, scroll-area, select, separator, sheet, sidebar, skeleton, slider, sonner, switch, table, tabs, textarea, toast, toaster, toggle, toggle-group, tooltip</p>
+</div>
+
+<h3>Remove (12 components)</h3>
+<div class="card">
+  <p style="color: var(--red);">aspect-ratio, calendar, carousel, chart, collapsible, command, context-menu, drawer, hover-card, input-otp, menubar, navigation-menu, resizable</p>
+</div>
+
+<h3>Hooks to Port</h3>
+<div class="card">
+  <ul>
+    <li><code>use-mobile.tsx</code> &mdash; as-is</li>
+    <li><code>use-toast.ts</code> &mdash; as-is</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2><span class="phase-num">3</span> Phase 3: Pages</h2>
+
+<h3>3.1 <code>src/pages/Index.tsx</code> (~100 lines)</h3>
+<div class="card">
+  <p>Beautiful showcase landing page demonstrating all v2 capabilities:</p>
+  <ul>
+    <li>Framer Motion staggered entrance animations</li>
+    <li>Space Grotesk hero headline with <code>.text-gradient</code></li>
+    <li>Gradient background orb with blur</li>
+    <li><code>.glass-light</code> feature cards</li>
+    <li><code>.shadow-glow</code> on primary CTA button</li>
+    <li>Feature pills showing available tools</li>
+    <li>Responsive: mobile-first, looks great at all sizes</li>
+  </ul>
+</div>
+
+<h3>3.2 <code>src/pages/NotFound.tsx</code></h3>
+<div class="card">
+  <p>Enhanced with Framer Motion fade-in and the new design system.</p>
+</div>
+
+<h3>3.3 <code>src/App.tsx</code> + <code>src/main.tsx</code></h3>
+<div class="card">
+  <p>Same as v1 (providers, routes, entry point).</p>
+</div>
+
+<hr>
+
+<h2><span class="phase-num">4</span> Phase 4: Documentation</h2>
+
+<h3>4.1 <code>CLAUDE.md</code> (~200 lines, down from 121)</h3>
+<div class="card">
+  <ul>
+    <li>Dev commands</li>
+    <li>Stack versions (React 19, Vite 7, TS 5.9)</li>
+    <li>Available fonts with <code>font-*</code> class names</li>
+    <li>CSS utilities quick reference</li>
+    <li>Component import table (one line each)</li>
+    <li>Architecture rules (300-line limit, @/ imports, cn(), service layer)</li>
+    <li>Design principles (mobile-first, WCAG AA, generous spacing)</li>
+  </ul>
+</div>
+
+<h3>4.2 <code>SYNTIC_AI_SYSTEM_PROMPT.md</code> (~600 lines, down from 1,950)</h3>
+<div class="card">
+  <p><span class="badge badge-green">70% reduction</span></p>
+  <p>Strip tutorials Claude already knows. Focus on:</p>
+  <ul>
+    <li>Mission + JSON response format (30 lines)</li>
+    <li>Design philosophy: bold, distinctive, NOT generic (30 lines)</li>
+    <li>Available tools &mdash; fonts, Framer Motion patterns, CSS utilities, components (150 lines)</li>
+    <li>Composition patterns &mdash; hero, feature grid, dashboard, form (100 lines)</li>
+    <li>Rules &mdash; component size, mobile-first, a11y, TypeScript strict (50 lines)</li>
+    <li>Tech stack + Supabase quick ref (70 lines)</li>
+    <li>Color strategy per industry (20 lines)</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2><span class="phase-num">5</span> Phase 5: App Builder Integration</h2>
+
+<h3>5.1 Update <code>src/lib/boilerplate-manifest.ts</code></h3>
+<div class="card">
+  <ul>
+    <li>Change <code>BOILERPLATE_REPO_RAW_URL</code> to <code>https://raw.githubusercontent.com/Syntic-Ai/boilerplate-v2/main</code></li>
+    <li>Update <code>BOILERPLATE_FILES</code> array: remove 12 deleted component files, keep ~30</li>
+  </ul>
+</div>
+
+<h3>5.2 Update <code>supabase/functions/agent-orchestrator/index.ts</code></h3>
+<div class="card">
+  <ul>
+    <li>Update <code>TEMPLATE_PACKAGES</code> set (~line 964): remove 14 packages, add <code>framer-motion</code></li>
+  </ul>
+</div>
+
+<h3>5.3 Update <code>supabase/functions/agent-orchestrator-modal/index.ts</code></h3>
+<div class="card">
+  <ul>
+    <li>Update <code>TEMPLATE_PACKAGES</code> set (~line 603): same changes as above</li>
+    <li>Update <code>getTemplateUrl()</code> (~line 592) or <code>sandbox_templates</code> table to point to v2 repo</li>
+  </ul>
+</div>
+
+<h3>5.4 Supabase Database Changes</h3>
+<div class="card">
+  <ul>
+    <li>Insert new <code>system_prompts</code> row with slug <code>syntic-v2</code></li>
+    <li>Insert new <code>sandbox_templates</code> row pointing to v2 repo, set <code>is_default = true</code></li>
+    <li>Set v1 template to <code>is_default = false</code></li>
+  </ul>
+</div>
+
+<hr>
+
+<h2>Impact Summary</h2>
+
+<div class="metric-grid">
+  <div class="metric"><div class="metric-value">-37%</div><div class="metric-label">Runtime Dependencies (35 &rarr; 22)</div></div>
+  <div class="metric"><div class="metric-value">-33%</div><div class="metric-label">UI Component Files (49 &rarr; 33)</div></div>
+  <div class="metric"><div class="metric-value">-70%</div><div class="metric-label">System Prompt Lines (1,950 &rarr; 600)</div></div>
+  <div class="metric"><div class="metric-value">+5</div><div class="metric-label">Custom Font Families</div></div>
+  <div class="metric"><div class="metric-value">+10</div><div class="metric-label">CSS Utility Classes</div></div>
+  <div class="metric"><div class="metric-value">+1</div><div class="metric-label">Framer Motion (was missing)</div></div>
+</div>
+
+<table>
+  <thead><tr><th>Metric</th><th>V1</th><th>V2</th><th>Change</th></tr></thead>
+  <tbody>
+    <tr><td>Runtime dependencies</td><td>~35</td><td>~22</td><td><span class="badge badge-green">-37%</span></td></tr>
+    <tr><td>UI component files</td><td>49</td><td>~33</td><td><span class="badge badge-green">-33%</span></td></tr>
+    <tr><td>System prompt lines</td><td>1,950</td><td>~600</td><td><span class="badge badge-green">-70%</span></td></tr>
+    <tr><td>Custom fonts</td><td>0</td><td>5 families</td><td><span class="badge badge-primary">+5</span></td></tr>
+    <tr><td>CSS utility classes</td><td>0</td><td>10+</td><td><span class="badge badge-primary">+10</span></td></tr>
+    <tr><td>Framer Motion</td><td>missing</td><td>included</td><td><span class="badge badge-green">key addition</span></td></tr>
+    <tr><td>TypeScript strict</td><td>false</td><td>true</td><td><span class="badge badge-green">quality up</span></td></tr>
+    <tr><td>npm install time</td><td>~30s</td><td>~20s</td><td><span class="badge badge-green">-33%</span></td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>Verification Checklist</h2>
+
+<div class="card">
+  <ol>
+    <li><strong>Build test:</strong> <code>cd boilerplate-v2 && npm install && npm run build</code> &mdash; must succeed</li>
+    <li><strong>Dev server test:</strong> <code>npm run dev</code> &mdash; Index.tsx renders with animations, fonts, gradients</li>
+    <li><strong>Lint test:</strong> <code>npm run lint</code> &mdash; passes with strict TS</li>
+    <li><strong>Dark mode:</strong> Toggle <code>.dark</code> class, verify all tokens work</li>
+    <li><strong>Mobile:</strong> Chrome DevTools at 375px, 768px, 1024px, 1440px</li>
+    <li><strong>Font loading:</strong> Network tab shows all 5 font families loaded</li>
+    <li><strong>Integration:</strong> Create test project in App Builder, submit "Build a portfolio website" &mdash; compare output quality v1 vs v2</li>
+    <li><strong>Backward compat:</strong> Existing v1 projects still load correctly (files from <code>project_files</code> table)</li>
+  </ol>
+</div>
+
+<hr>
+
+<h2>Files to Create/Modify</h2>
+
+<h3>New Files (in <code>boilerplate-v2/</code>)</h3>
+<div class="card">
+  <ul>
+    <li><code>package.json</code>, <code>index.html</code>, <code>vite.config.ts</code>, <code>tailwind.config.ts</code>, <code>tsconfig.json</code>, <code>tsconfig.app.json</code>, <code>tsconfig.node.json</code>, <code>postcss.config.js</code>, <code>eslint.config.js</code>, <code>components.json</code>, <code>.gitignore</code></li>
+    <li><code>src/index.css</code>, <code>src/main.tsx</code>, <code>src/App.tsx</code>, <code>src/App.css</code>, <code>src/vite-env.d.ts</code></li>
+    <li><code>src/lib/utils.ts</code></li>
+    <li><code>src/hooks/use-mobile.tsx</code>, <code>src/hooks/use-toast.ts</code></li>
+    <li><code>src/components/ui/</code> (~30 component files + use-toast.ts)</li>
+    <li><code>src/pages/Index.tsx</code>, <code>src/pages/NotFound.tsx</code></li>
+    <li><code>src/integrations/supabase/client.ts</code>, <code>src/integrations/supabase/types.ts</code></li>
+    <li><code>CLAUDE.md</code>, <code>SYNTIC_AI_SYSTEM_PROMPT.md</code>, <code>README.md</code></li>
+    <li><code>public/</code> (favicon files, placeholder.svg, robots.txt)</li>
+    <li><code>supabase/config.toml</code>, <code>supabase/.gitignore</code></li>
+  </ul>
+</div>
+
+<h3>Files to Modify (in App Builder)</h3>
+<div class="card">
+  <ul>
+    <li><code>src/lib/boilerplate-manifest.ts</code> &mdash; URL + file list</li>
+    <li><code>supabase/functions/agent-orchestrator/index.ts</code> &mdash; TEMPLATE_PACKAGES</li>
+    <li><code>supabase/functions/agent-orchestrator-modal/index.ts</code> &mdash; TEMPLATE_PACKAGES + template URL</li>
+  </ul>
+</div>
+
+<hr>
+<p style="text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 2rem;">
+  Syntic AI &bull; Boilerplate V2 Plan &bull; Generated 2026-02-23
+</p>
+
+</body>
+</html>
