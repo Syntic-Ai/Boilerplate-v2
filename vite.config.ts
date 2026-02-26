@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    allowedHosts: [".replit.dev"]
+    allowedHosts: true
   },
   plugins: [
     react(),
